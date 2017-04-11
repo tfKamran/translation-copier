@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+const csv = require('csvtojson');
+
 if (process.argv.length != 4) {
     console.log(
         "You need to pass in two arguments:\n"
@@ -14,3 +16,11 @@ if (process.argv.length != 4) {
 
     return;
 }
+
+csv().fromFile(process.argv[2])
+    .on('json', (item) => {
+        console.log(item);
+    })
+    .on('done', (error) => {
+        console.log('Done!')
+    });
