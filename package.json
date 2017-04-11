@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "a tool to copy string translations in an Android project from a CSV",
   "main": "index.js",
+  "bin": {
+    "translation-copier": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
