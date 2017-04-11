@@ -1,6 +1,6 @@
 {
   "name": "translation-copier",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a tool to copy string translations in an Android project from a CSV",
   "main": "index.js",
   "bin": {
