@@ -42,7 +42,11 @@ csv().fromFile(CSVFile)
                 'utf8');
         }
 
-        xml2js.parseString(fs.readFileSync(stringsFile, 'utf8'), (error, xmlJSON) => {
+        const stringsXMLContent = fs.readFileSync(stringsFile, 'utf8');
+
+        const isFourSpacesTabbed = stringsXMLContent.indexOf('    ') != -1 && stringsXMLContent.indexOf('    ') < stringsXMLContent.indexOf('string-array');
+
+        xml2js.parseString(stringsXMLContent, (error, xmlJSON) => {
             Object.keys(item).forEach(key => {;
 
                 if (!xmlJSON.resources) {
@@ -73,11 +77,14 @@ csv().fromFile(CSVFile)
                 'xmldec': '<?xml version="1.0" encoding="UTF-8"?>'
             }).buildObject(xmlJSON);
 
-            fs.writeFileSync(stringsFile,
-                '<?xml version="1.0" encoding="UTF-8"?>\n'
-                + xml.replace('<?xml version="1.0"?>\n', '')
-                        .split('  ').join('    '),
-                'utf8');
+            xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+                + xml.replace('<?xml version="1.0"?>\n', '');
+
+            if (isFourSpacesTabbed) {
+                xml = xml.split('  <').join('    <');
+            }
+
+            fs.writeFileSync(stringsFile, xml, 'utf8');
         });
     })
     .on('done', (error) => {
