@@ -53,6 +53,14 @@ csv().fromFile(CSVFile)
                     xmlJSON.resources.string = [];
                 }
 
+                xmlJSON.resources.string = xmlJSON.resources.string.filter(item => {
+                    if (item.$.name == key) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
                 xmlJSON.resources.string.push({
                     "_": item[key],
                     "$": {
