@@ -11,7 +11,7 @@ A tool to copy string translations in an Android project from a CSV
 
 Make a CSV of strings in the following format:
 
-![CSV Template](./CSV Template.png)
+![CSV Template](./CSVTemplate.png)
 
 Let translation copier take control!
 
