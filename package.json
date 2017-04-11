@@ -1,0 +1,19 @@
+{
+  "name": "translation-copier",
+  "version": "1.0.0",
+  "description": "a tool to copy string translations in an Android project from a CSV",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tfKamran/translation-copier.git"
+  },
+  "author": "tfKamran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tfKamran/translation-copier/issues"
+  },
+  "homepage": "https://github.com/tfKamran/translation-copier#readme"
+}
