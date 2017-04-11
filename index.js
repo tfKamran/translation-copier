@@ -1,6 +1,8 @@
 #! /usr/bin/env node
 
 const csv = require('csvtojson');
+const fs = require('fs');
+const xml2js = require('xml2js');
 
 if (process.argv.length != 4) {
     console.log(
@@ -17,9 +19,58 @@ if (process.argv.length != 4) {
     return;
 }
 
-csv().fromFile(process.argv[2])
+const CSVFile = process.argv[2];
+const resFolder = process.argv[3];
+
+csv().fromFile(CSVFile)
     .on('json', (item) => {
-        console.log(item);
+        const language = item[Object.keys(item)[0]];
+
+        delete item[Object.keys(item)[0]];
+        
+        const valuesFolder = (language == "en" ? resFolder + "/values" : resFolder + "/values-" + language);
+
+        if (!fs.existsSync(valuesFolder)) {
+            fs.mkdirSync(valuesFolder);
+        }
+
+        const stringsFile = valuesFolder + "/strings.xml";
+
+        if (!fs.existsSync(stringsFile)) {
+            fs.writeFileSync(stringsFile,
+                '<resources></resources>',
+                'utf8');
+        }
+
+        xml2js.parseString(fs.readFileSync(stringsFile, 'utf8'), (error, xmlJSON) => {
+            Object.keys(item).forEach(key => {;
+
+                if (!xmlJSON.resources) {
+                    xmlJSON.resources = {};
+                }
+
+                if (!xmlJSON.resources.string) {
+                    xmlJSON.resources.string = [];
+                }
+
+                xmlJSON.resources.string.push({
+                    "_": item[key],
+                    "$": {
+                        "name": key
+                    }
+                });
+            });
+
+            var xml = new xml2js.Builder({
+                'xmldec': '<?xml version="1.0" encoding="UTF-8"?>'
+            }).buildObject(xmlJSON);
+
+            fs.writeFileSync(stringsFile,
+                '<?xml version="1.0" encoding="UTF-8"?>\n'
+                + xml.replace('<?xml version="1.0"?>\n', '')
+                        .split('  ').join('    '),
+                'utf8');
+        });
     })
     .on('done', (error) => {
         console.log('Done!')
