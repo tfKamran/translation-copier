@@ -44,7 +44,9 @@ csv().fromFile(CSVFile)
 
         const stringsXMLContent = fs.readFileSync(stringsFile, 'utf8');
 
-        const isFourSpacesTabbed = stringsXMLContent.indexOf('    ') != -1 && stringsXMLContent.indexOf('    ') < stringsXMLContent.indexOf('string-array');
+        const isFourSpacesTabbed = stringsXMLContent.indexOf('    ') != -1
+                && (stringsXMLContent.indexOf('string-array') == -1
+                    || stringsXMLContent.indexOf('    ') < stringsXMLContent.indexOf('string-array'));
 
         xml2js.parseString(stringsXMLContent, (error, xmlJSON) => {
             Object.keys(item).forEach(key => {;
